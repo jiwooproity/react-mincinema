@@ -1,49 +1,92 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import { getMovieData } from "../../../config/api";
 
 const MainContainer = styled.div`
   width: 100%;
 
-  padding: 20px;
-
   display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: black;
+  flex-wrap: wrap;
 `;
 
-const MainTestSpan = styled.span`
-  font-size: 15px;
-
-  color: white;
+const MainLoading = styled.div`
+  width: 100%;
 `;
 
-const MovieImage = styled.img`
-  width: 300px;
+const MainLoadingText = styled.h1`
+  font-size: 30px;
+
+  color: black;
+`;
+
+const MainMovieWrap = styled.div`
+  width: 200px;
+
+  margin: 0px 10px 10px 10px;
+
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+`;
+
+const MainMovieImage = styled.img`
+  width: 100%;
+
+  display: block;
 
   object-fit: cover;
 `;
 
-const Main = () => {
-  const [data, setData] = useState([]);
+const MainMovieTitle = styled.span`
+  font-size: 15px;
 
-  console.log(data);
+  display: block;
+
+  padding: 10px 5px;
+`;
+
+// 영화 목록 출력
+const RenderItem = ({ movie }, key) => {
+  const { large_cover_image, title } = movie;
+
+  return (
+    <MainMovieWrap>
+      <MainMovieImage key={key} src={large_cover_image} />
+      <MainMovieTitle>{title}</MainMovieTitle>
+    </MainMovieWrap>
+  );
+};
+
+const Main = () => {
+  const [loading, setLoading] = useState(true);
+  const [movie, setMovie] = useState([]);
+  const [urlPath, setUrlPath] = useState("https://yts.mx/api/v2/list_movies.json?limit=10");
 
   useEffect(() => {
-    const getMovie = async () => {
-      const movie = await axios.get("https://yts.mx/api/v2/list_movies.json?limit=50&sort_by=download_count");
+    setLoading(true);
 
-      setData(movie.data.data.movies);
+    const requestMovie = async () => {
+      const response = await getMovieData.getMovie(urlPath);
+      setMovie(response);
+      setLoading(false);
     };
 
-    getMovie();
-  }, []);
+    requestMovie();
+  }, [urlPath]);
+
+  const changeMovie = () => {
+    setUrlPath("https://yts.mx/api/v2/list_movies.json?sort_by=download_count&limit=10");
+  };
 
   return (
     <MainContainer>
-      <MainTestSpan>{data && data.length > 0 && data.map((item) => <MovieImage src={item.large_cover_image} />)}</MainTestSpan>
+      {loading ? (
+        <MainLoading>
+          <MainLoadingText>Loading ...</MainLoadingText>
+        </MainLoading>
+      ) : (
+        movie.map((item, index) => <RenderItem movie={item} key={index} />)
+      )}
+
+      <button onClick={changeMovie}>Change</button>
     </MainContainer>
   );
 };
