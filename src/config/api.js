@@ -16,9 +16,11 @@ const getRequest = (path) => {
 };
 
 const getData = async (path, param, method) => {
+  let responseData = [];
+
   switch (method) {
     case MethodKey.GET:
-      const responseData = await getRequest(path);
+      responseData = await getRequest(path);
       const { movies } = responseData.data.data;
       return movies;
     case MethodKey.POST:
@@ -29,5 +31,5 @@ const getData = async (path, param, method) => {
 };
 
 export const getMovieData = {
-  getMovie: (urlPath, param) => getData(urlPath, param, "GET"),
+  getMovie: (param) => getData("https://yts.mx/api/v2/list_movies.json?sort_by=download_count&limit=20", param, "GET"),
 };
