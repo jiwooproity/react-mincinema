@@ -6,15 +6,14 @@ import "slick-carousel/slick/slick-theme.css";
 import { getMovieData } from "../../../../config/api";
 
 const ToptenContainer = styled.div`
-  margin-top: 10px;
+  padding: 0px 10px;
+  transform: translateY(-20px);
 
   .slick-center .slide-h3 {
     color: #fff;
   }
 
   .slider {
-    width: 600px;
-    height: 150px;
     margin: 20px auto;
     text-align: center;
   }
@@ -31,12 +30,19 @@ const ToptenContainer = styled.div`
 
   .slick-slide {
     opacity: 0.3;
+    padding: 0px;
+    transform: scale(0.8);
+
+    transition: transform 0.5s ease;
   }
 
   .slick-center {
     display: block;
     max-width: 10% !important;
     max-height: 20% !important;
+    transform: scale(1);
+
+    transition: transform 0.5s ease;
     opacity: 1;
   }
 `;
@@ -62,8 +68,6 @@ const MovieImage = styled.img`
 
   border-radius: 10px;
 
-  padding: 0px 5px;
-
   display: block;
 
   transition: filter 0.5s ease;
@@ -72,8 +76,6 @@ const MovieImage = styled.img`
 const MovieTitle = styled.h1`
   font-size: 30px;
   line-height: 30px;
-
-  padding: 5px 20px;
 
   color: white;
 `;
@@ -84,7 +86,9 @@ const Topten = () => {
 
   useEffect(() => {
     const getMovies = async () => {
-      const response = await getMovieData.getMovie();
+      const urlPath =
+        "https://yts.mx/api/v2/list_movies.json?sort_by=download_count&limit=20";
+      const response = await getMovieData.getMovie(urlPath);
 
       setMovie(response);
     };
@@ -94,10 +98,10 @@ const Topten = () => {
 
   const settings = {
     centerMode: true,
-    centerPadding: "400px",
-    slidesToShow: 3,
+    centerPadding: "0px",
+    slidesToShow: 7,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 8000,
     speed: 500,
     afterChange: (e) => {
       setNowSlick(e);
@@ -129,18 +133,23 @@ const Topten = () => {
       <CustomSlider {...settings}>
         {movie &&
           movie.length > 0 &&
-          movie.map((item) => {
+          movie.map((item, index) => {
             const { large_cover_image, imdb_code } = item;
 
             return (
-              <MovieImageWrap>
+              <MovieImageWrap key={index}>
                 <MovieImageDrop />
-                <MovieImage src={large_cover_image} onClick={() => console.log(imdb_code)} />
+                <MovieImage
+                  src={large_cover_image}
+                  onClick={() => console.log(imdb_code)}
+                />
               </MovieImageWrap>
             );
           })}
       </CustomSlider>
-      <MovieTitle>{movie && movie.length > 0 && movie[nowSlick].title_long}</MovieTitle>
+      <MovieTitle>
+        {movie && movie.length > 0 && movie[nowSlick].title_long}
+      </MovieTitle>
     </ToptenContainer>
   );
 };

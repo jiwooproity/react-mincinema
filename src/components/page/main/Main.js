@@ -5,7 +5,8 @@ import Video from "./video/Video";
 
 const MainContainer = styled.div`
   width: 100%;
-  height: 5000px;
+
+  padding: 30px;
 
   background-color: rgba(0, 0, 0, 1);
 `;
