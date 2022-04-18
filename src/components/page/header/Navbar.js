@@ -68,7 +68,7 @@ const NavbarLogo = styled.h1`
 const MenuItem = [
   {
     title: "홈",
-    link: "/home",
+    link: "/main",
   },
   {
     title: "시리즈",
