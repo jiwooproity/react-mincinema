@@ -31,5 +31,5 @@ const getData = async (path, param, method) => {
 };
 
 export const getMovieData = {
-  getMovie: (param) => getData("https://yts.mx/api/v2/list_movies.json?sort_by=download_count&limit=20", param, "GET"),
+  getMovie: (path, param) => getData(path, param, "GET"),
 };
