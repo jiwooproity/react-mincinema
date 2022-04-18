@@ -20,15 +20,14 @@ const MovieRank = styled.h1`
   width: 5px;
   font-size: 350px;
   line-height: 350px;
-  letter-spacing: -50px;
 
   opacity: ${({ active }) => (active ? 0.8 : 0)};
 
   z-index: -1;
 
   position: absolute;
-  top: 40%;
-  left: ${({ isTen }) => (isTen ? "-280px" : "-140px")};
+  top: 50%;
+  left: ${({ isTen }) => (isTen ? "-220px" : "-130px")};
 
   text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
 

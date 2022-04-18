@@ -33,7 +33,7 @@ const MovieDetailBackground = styled.img`
 const MovieDetailPoster = styled.img`
   width: 300px;
 
-  z-index: 2;
+  z-index: 3;
 
   display: block;
   transform: scale(1.05);
