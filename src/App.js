@@ -8,7 +8,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path={process.env.PUBLIC_URL + "/main"} element={<Main />} />
+        <Route path={"/"} element={<Main />} />
       </Routes>
     </BrowserRouter>
   );
